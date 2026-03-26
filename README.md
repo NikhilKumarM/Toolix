@@ -1,4 +1,4 @@
-# Toolix — 25 Developer Utilities
+# Toolix — Developer Utilities
 
 A complete offline developer toolkit built with Electron for Windows.
 
