@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Toolix</title>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    <span>Toolix</span>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-group">
+      <div class="nav-label">Data Format</div>
+      <button class="nav-btn active" data-tool="json-fmt"><span class="ni">{ }</span>JSON Formatter</button>
+      <button class="nav-btn" data-tool="xml-fmt"><span class="ni">&lt;/&gt;</span>XML Formatter</button>
+      <button class="nav-btn" data-tool="yaml-json"><span class="ni">≈</span>YAML ↔ JSON</button>
+      <button class="nav-btn" data-tool="csv-json"><span class="ni">⊞</span>CSV ↔ JSON</button>
+      <button class="nav-btn" data-tool="base64"><span class="ni">64</span>Base64</button>
+      <button class="nav-btn" data-tool="html-fmt"><span class="ni">H</span>HTML Formatter</button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">Security & Auth</div>
+      <button class="nav-btn" data-tool="jwt"><span class="ni">🔑</span>JWT Decoder</button>
+      <button class="nav-btn" data-tool="hash"><span class="ni">#</span>Hash Generator</button>
+      <button class="nav-btn" data-tool="password"><span class="ni">★</span>Password Gen</button>
+      <button class="nav-btn" data-tool="uuid"><span class="ni">⊕</span>UUID Generator</button>
+      <button class="nav-btn" data-tool="rsa"><span class="ni">🔐</span>RSA Key Pair</button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">Text & String</div>
+      <button class="nav-btn" data-tool="regex"><span class="ni">.*</span>Regex Tester</button>
+      <button class="nav-btn" data-tool="diff"><span class="ni">±</span>Diff Checker</button>
+      <button class="nav-btn" data-tool="lorem"><span class="ni">¶</span>Lorem Ipsum</button>
+      <button class="nav-btn" data-tool="case"><span class="ni">Aa</span>Case Converter</button>
+      <button class="nav-btn" data-tool="url-enc"><span class="ni">%</span>URL Encoder</button>
+      <button class="nav-btn" data-tool="markdown"><span class="ni">Md</span>Markdown Preview</button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">Network & API</div>
+      <button class="nav-btn" data-tool="url-parse"><span class="ni">🔗</span>URL Parser</button>
+      <button class="nav-btn" data-tool="http-status"><span class="ni">~</span>HTTP Status</button>
+      <button class="nav-btn" data-tool="cors"><span class="ni">⇌</span>CORS Analyzer</button>
+      <button class="nav-btn" data-tool="cidr"><span class="ni">IP</span>IP / CIDR</button>
+      <button class="nav-btn" data-tool="cron"><span class="ni">⏰</span>Cron Parser</button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">Dev Utilities</div>
+      <button class="nav-btn" data-tool="color"><span class="ni">●</span>Color Converter</button>
+      <button class="nav-btn" data-tool="epoch"><span class="ni">⏱</span>Epoch Converter</button>
+      <button class="nav-btn" data-tool="numbase"><span class="ni">01</span>Number Base</button>
+      <button class="nav-btn" data-tool="qrcode"><span class="ni">▦</span>QR Code</button>
+      <button class="nav-btn" data-tool="img-b64"><span class="ni">🖼</span>Image → Base64</button>
+    </div>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- ======================== JSON FORMATTER ======================== -->
+<div class="panel active" id="tool-json-fmt">
+  <div class="panel-header">
+    <h1>JSON Formatter / Validator</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="jsonMinify()">Minify</button>
+      <button class="btn ghost" onclick="jsonSort()">Sort Keys</button>
+      <button class="btn ghost" onclick="jsonCopy()">Copy</button>
+      <button class="btn ghost" onclick="jsonClear()">Clear</button>
+      <button class="btn primary" onclick="jsonFormat()">Format ↵</button>
+    </div>
+  </div>
+  <div class="split">
+    <div class="pane"><div class="pane-title">Input</div><textarea id="json-in" class="editor" placeholder='{ "key": "value" }'></textarea></div>
+    <div class="splitter"></div>
+    <div class="pane"><div class="pane-title">Output</div><div id="json-out" class="editor out"></div></div>
+  </div>
+  <div class="statusbar" id="json-status"></div>
+</div>
+
+<!-- ======================== XML FORMATTER ======================== -->
+<div class="panel" id="tool-xml-fmt">
+  <div class="panel-header">
+    <h1>XML Formatter / Validator</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="xmlMinify()">Minify</button>
+      <button class="btn ghost" onclick="xmlCopy()">Copy</button>
+      <button class="btn ghost" onclick="xmlClear()">Clear</button>
+      <button class="btn primary" onclick="xmlFormat()">Format ↵</button>
+    </div>
+  </div>
+  <div class="split">
+    <div class="pane"><div class="pane-title">Input</div><textarea id="xml-in" class="editor" placeholder='<root><item>value</item></root>'></textarea></div>
+    <div class="splitter"></div>
+    <div class="pane"><div class="pane-title">Output</div><div id="xml-out" class="editor out"></div></div>
+  </div>
+  <div class="statusbar" id="xml-status"></div>
+</div>
+
+<!-- ======================== YAML ↔ JSON ======================== -->
+<div class="panel" id="tool-yaml-json">
+  <div class="panel-header">
+    <h1>YAML ↔ JSON Converter</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="yjCopy()">Copy Output</button>
+      <button class="btn ghost" onclick="yjClear()">Clear</button>
+      <button class="btn primary" onclick="yamlToJson()">YAML → JSON</button>
+      <button class="btn primary" onclick="jsonToYaml()">JSON → YAML</button>
+    </div>
+  </div>
+  <div class="split">
+    <div class="pane"><div class="pane-title">Input</div><textarea id="yj-in" class="editor" placeholder="Paste YAML or JSON here..."></textarea></div>
+    <div class="splitter"></div>
+    <div class="pane"><div class="pane-title">Output</div><div id="yj-out" class="editor out"></div></div>
+  </div>
+  <div class="statusbar" id="yj-status"></div>
+</div>
+
+<!-- ======================== CSV ↔ JSON ======================== -->
+<div class="panel" id="tool-csv-json">
+  <div class="panel-header">
+    <h1>CSV ↔ JSON Converter</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="csvCopy()">Copy Output</button>
+      <button class="btn ghost" onclick="csvClear()">Clear</button>
+      <button class="btn primary" onclick="csvToJson()">CSV → JSON</button>
+      <button class="btn primary" onclick="jsonToCsv()">JSON → CSV</button>
+    </div>
+  </div>
+  <div class="split">
+    <div class="pane"><div class="pane-title">Input</div><textarea id="csv-in" class="editor" placeholder="name,age,city&#10;Alice,30,NYC&#10;Bob,25,LA"></textarea></div>
+    <div class="splitter"></div>
+    <div class="pane"><div class="pane-title">Output</div><div id="csv-out" class="editor out"></div></div>
+  </div>
+  <div class="statusbar" id="csv-status"></div>
+</div>
+
+<!-- ======================== BASE64 ======================== -->
+<div class="panel" id="tool-base64">
+  <div class="panel-header">
+    <h1>Base64 Encoder / Decoder</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="b64Copy()">Copy Output</button>
+      <button class="btn ghost" onclick="b64Clear()">Clear</button>
+      <button class="btn primary" onclick="b64Encode()">Encode →</button>
+      <button class="btn primary" onclick="b64Decode()">← Decode</button>
+    </div>
+  </div>
+  <div class="split">
+    <div class="pane"><div class="pane-title">Input</div><textarea id="b64-in" class="editor" placeholder="Text or Base64 string..."></textarea></div>
+    <div class="splitter"></div>
+    <div class="pane"><div class="pane-title">Output</div><div id="b64-out" class="editor out"></div></div>
+  </div>
+  <div class="statusbar" id="b64-status"></div>
+</div>
+
+<!-- ======================== HTML FORMATTER ======================== -->
+<div class="panel" id="tool-html-fmt">
+  <div class="panel-header">
+    <h1>HTML Formatter / Minifier</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="htmlCopy()">Copy</button>
+      <button class="btn ghost" onclick="htmlClear()">Clear</button>
+      <button class="btn primary" onclick="htmlMinify()">Minify</button>
+      <button class="btn primary" onclick="htmlFormat()">Format ↵</button>
+    </div>
+  </div>
+  <div class="split">
+    <div class="pane"><div class="pane-title">Input</div><textarea id="html-in" class="editor" placeholder="<html>...</html>"></textarea></div>
+    <div class="splitter"></div>
+    <div class="pane"><div class="pane-title">Output</div><div id="html-out" class="editor out"></div></div>
+  </div>
+  <div class="statusbar" id="html-status"></div>
+</div>
+
+<!-- ======================== JWT ======================== -->
+<div class="panel" id="tool-jwt">
+  <div class="panel-header">
+    <h1>JWT Decoder / Inspector</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="jwtClear()">Clear</button>
+      <button class="btn primary" onclick="jwtDecode()">Decode</button>
+    </div>
+  </div>
+  <div class="jwt-layout">
+    <textarea id="jwt-in" class="editor short" placeholder="Paste JWT token here... eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."></textarea>
+    <div id="jwt-expiry" class="badge" style="display:none"></div>
+    <div id="jwt-parts" class="jwt-grid" style="display:none">
+      <div class="jwt-seg blue-seg"><div class="seg-hdr">Header</div><div class="seg-body" id="jwt-header"></div></div>
+      <div class="jwt-seg green-seg"><div class="seg-hdr">Payload</div><div class="seg-body" id="jwt-payload"></div></div>
+      <div class="jwt-seg purple-seg"><div class="seg-hdr">Signature</div><div class="seg-body" id="jwt-sig"></div></div>
+    </div>
+  </div>
+  <div class="statusbar" id="jwt-status"></div>
+</div>
+
+<!-- ======================== HASH ======================== -->
+<div class="panel" id="tool-hash">
+  <div class="panel-header">
+    <h1>Hash Generator</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="hashClear()">Clear</button>
+      <button class="btn primary" onclick="genHashes()">Generate</button>
+    </div>
+  </div>
+  <textarea id="hash-in" class="editor short" placeholder="Enter text to hash..."></textarea>
+  <div id="hash-results" class="hash-list"></div>
+  <div class="statusbar" id="hash-status"></div>
+</div>
+
+<!-- ======================== PASSWORD ======================== -->
+<div class="panel" id="tool-password">
+  <div class="panel-header"><h1>Password Generator & Strength Checker</h1></div>
+  <div class="pw-layout">
+    <div class="pw-gen-card">
+      <div class="pw-display" id="pw-display">Click Generate</div>
+      <div class="pw-controls">
+        <div class="ctrl-row"><label>Length: <span id="pw-len-val">16</span></label><input type="range" id="pw-len" min="4" max="128" value="16" oninput="document.getElementById('pw-len-val').textContent=this.value"/></div>
+        <div class="ctrl-row checkboxes">
+          <label><input type="checkbox" id="pw-upper" checked/> A–Z</label>
+          <label><input type="checkbox" id="pw-lower" checked/> a–z</label>
+          <label><input type="checkbox" id="pw-digits" checked/> 0–9</label>
+          <label><input type="checkbox" id="pw-sym" checked/> !@#$</label>
+          <label><input type="checkbox" id="pw-ambig"/> Exclude ambiguous</label>
+        </div>
+        <div class="ctrl-row">
+          <button class="btn primary" onclick="genPassword()">Generate</button>
+          <button class="btn ghost" onclick="copyPw()">Copy</button>
+        </div>
+      </div>
+    </div>
+    <div class="pw-checker-card">
+      <div class="pane-title">Password Strength Checker</div>
+      <input type="text" id="pw-check" class="pw-check-input" placeholder="Type or paste any password..." oninput="checkStrength()"/>
+      <div id="pw-strength-bar" class="strength-bar"><div id="pw-strength-fill" class="strength-fill"></div></div>
+      <div id="pw-strength-label" class="strength-label"></div>
+      <div id="pw-strength-details" class="strength-details"></div>
+    </div>
+  </div>
+  <div class="statusbar" id="pw-status"></div>
+</div>
+
+<!-- ======================== UUID ======================== -->
+<div class="panel" id="tool-uuid">
+  <div class="panel-header">
+    <h1>UUID / GUID Generator</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="uuidCopyAll()">Copy All</button>
+      <button class="btn ghost" onclick="uuidClear()">Clear</button>
+      <button class="btn primary" onclick="genUUIDs()">Generate</button>
+    </div>
+  </div>
+  <div class="uuid-controls">
+    <label>Count: <input type="number" id="uuid-count" value="5" min="1" max="100" class="num-input"/></label>
+    <label>Version:
+      <select id="uuid-ver" class="sel">
+        <option value="4">v4 (random)</option>
+        <option value="1">v1 (timestamp)</option>
+        <option value="nil">Nil UUID</option>
+      </select>
+    </label>
+    <label>Format:
+      <select id="uuid-fmt" class="sel">
+        <option value="standard">Standard</option>
+        <option value="upper">UPPERCASE</option>
+        <option value="no-dash">No Dashes</option>
+        <option value="braces">With Braces</option>
+      </select>
+    </label>
+  </div>
+  <div id="uuid-list" class="uuid-list"></div>
+  <div class="statusbar" id="uuid-status"></div>
+</div>
+
+<!-- ======================== RSA ======================== -->
+<div class="panel" id="tool-rsa">
+  <div class="panel-header">
+    <h1>RSA Key Pair Generator</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="rsaClear()">Clear</button>
+      <button class="btn primary" onclick="genRSA()">Generate Keys</button>
+    </div>
+  </div>
+  <div class="rsa-controls">
+    <label>Key Size:
+      <select id="rsa-size" class="sel">
+        <option value="1024">1024-bit</option>
+        <option value="2048" selected>2048-bit</option>
+        <option value="4096">4096-bit</option>
+      </select>
+    </label>
+    <label>Format:
+      <select id="rsa-fmt" class="sel">
+        <option value="pkcs8">PKCS#8 (PEM)</option>
+        <option value="spki">SPKI (PEM)</option>
+      </select>
+    </label>
+  </div>
+  <div class="rsa-keys" id="rsa-keys">
+    <div class="key-card">
+      <div class="key-hdr">Private Key <button class="btn ghost sm" onclick="copyEl('rsa-priv')">Copy</button></div>
+      <div id="rsa-priv" class="key-body">Generate keys to see output...</div>
+    </div>
+    <div class="key-card">
+      <div class="key-hdr">Public Key <button class="btn ghost sm" onclick="copyEl('rsa-pub')">Copy</button></div>
+      <div id="rsa-pub" class="key-body">Generate keys to see output...</div>
+    </div>
+  </div>
+  <div class="statusbar" id="rsa-status"></div>
+</div>
+
+<!-- ======================== REGEX ======================== -->
+<div class="panel" id="tool-regex">
+  <div class="panel-header">
+    <h1>Regex Tester & Debugger</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="regexClear()">Clear</button>
+      <button class="btn primary" onclick="runRegex()">Test</button>
+    </div>
+  </div>
+  <div class="regex-ctrl">
+    <span class="slash">/</span>
+    <input id="re-pattern" class="re-input" placeholder="pattern"/>
+    <span class="slash">/</span>
+    <input id="re-flags" class="re-flags" value="g" placeholder="flags"/>
+  </div>
+  <div class="split" style="flex:1">
+    <div class="pane"><div class="pane-title">Test String</div><textarea id="re-input" class="editor" placeholder="Enter test string..."></textarea></div>
+    <div class="splitter"></div>
+    <div class="pane"><div class="pane-title">Matches</div><div id="re-output" class="editor out"></div></div>
+  </div>
+  <div id="re-highlight" class="highlight-area"></div>
+  <div class="statusbar" id="re-status"></div>
+</div>
+
+<!-- ======================== DIFF ======================== -->
+<div class="panel" id="tool-diff">
+  <div class="panel-header">
+    <h1>Diff Checker</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="diffClear()">Clear</button>
+      <button class="btn primary" onclick="runDiff()">Compare</button>
+    </div>
+  </div>
+  <div class="split" style="flex:none;height:220px">
+    <div class="pane"><div class="pane-title">Original</div><textarea id="diff-a" class="editor" placeholder="Original text..."></textarea></div>
+    <div class="splitter"></div>
+    <div class="pane"><div class="pane-title">Modified</div><textarea id="diff-b" class="editor" placeholder="Modified text..."></textarea></div>
+  </div>
+  <div class="pane-title" style="margin-top:12px">Diff Output</div>
+  <div id="diff-out" class="diff-out editor out" style="flex:1"></div>
+  <div class="statusbar" id="diff-status"></div>
+</div>
+
+<!-- ======================== LOREM IPSUM ======================== -->
+<div class="panel" id="tool-lorem">
+  <div class="panel-header">
+    <h1>Lorem Ipsum Generator</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="loremCopy()">Copy</button>
+      <button class="btn ghost" onclick="loremClear()">Clear</button>
+      <button class="btn primary" onclick="genLorem()">Generate</button>
+    </div>
+  </div>
+  <div class="lorem-controls">
+    <label>Type: <select id="lorem-type" class="sel"><option value="paragraphs">Paragraphs</option><option value="sentences">Sentences</option><option value="words">Words</option></select></label>
+    <label>Count: <input type="number" id="lorem-count" value="3" min="1" max="50" class="num-input"/></label>
+    <label><input type="checkbox" id="lorem-start" checked/> Start with "Lorem ipsum..."</label>
+  </div>
+  <div id="lorem-out" class="lorem-out editor out"></div>
+  <div class="statusbar" id="lorem-status"></div>
+</div>
+
+<!-- ======================== CASE CONVERTER ======================== -->
+<div class="panel" id="tool-case">
+  <div class="panel-header">
+    <h1>Case Converter</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="caseClear()">Clear</button>
+    </div>
+  </div>
+  <textarea id="case-in" class="editor short" placeholder="Enter text to convert..."></textarea>
+  <div class="case-grid" id="case-grid"></div>
+  <div class="statusbar" id="case-status"></div>
+</div>
+
+<!-- ======================== URL ENCODER ======================== -->
+<div class="panel" id="tool-url-enc">
+  <div class="panel-header">
+    <h1>URL Encoder / Decoder</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="urlCopy()">Copy Output</button>
+      <button class="btn ghost" onclick="urlClear()">Clear</button>
+      <button class="btn primary" onclick="urlEncode()">Encode →</button>
+      <button class="btn primary" onclick="urlDecode()">← Decode</button>
+    </div>
+  </div>
+  <div class="split">
+    <div class="pane"><div class="pane-title">Input</div><textarea id="url-in" class="editor" placeholder="https://example.com/path?q=hello world&name=John Doe"></textarea></div>
+    <div class="splitter"></div>
+    <div class="pane"><div class="pane-title">Output</div><div id="url-out" class="editor out"></div></div>
+  </div>
+  <div class="statusbar" id="url-status"></div>
+</div>
+
+<!-- ======================== MARKDOWN ======================== -->
+<div class="panel" id="tool-markdown">
+  <div class="panel-header">
+    <h1>Markdown Previewer</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="mdClear()">Clear</button>
+    </div>
+  </div>
+  <div class="split">
+    <div class="pane"><div class="pane-title">Markdown</div><textarea id="md-in" class="editor" placeholder="# Hello World&#10;&#10;Type **markdown** here..."></textarea></div>
+    <div class="splitter"></div>
+    <div class="pane"><div class="pane-title">Preview</div><div id="md-out" class="md-preview"></div></div>
+  </div>
+  <div class="statusbar" id="md-status"></div>
+</div>
+
+<!-- ======================== URL PARSER ======================== -->
+<div class="panel" id="tool-url-parse">
+  <div class="panel-header">
+    <h1>URL Parser & Builder</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="urlparseClear()">Clear</button>
+      <button class="btn primary" onclick="parseURL()">Parse</button>
+    </div>
+  </div>
+  <input type="text" id="urlp-in" class="full-input" placeholder="https://user:pass@example.com:8080/path/to/page?foo=bar&baz=qux#section"/>
+  <div id="urlp-out" class="urlp-grid"></div>
+  <div class="statusbar" id="urlp-status"></div>
+</div>
+
+<!-- ======================== HTTP STATUS ======================== -->
+<div class="panel" id="tool-http-status">
+  <div class="panel-header">
+    <h1>HTTP Status Code Reference</h1>
+    <div class="actions">
+      <input type="text" id="http-search" class="search-input" placeholder="Search codes or descriptions..." oninput="filterHTTP()"/>
+    </div>
+  </div>
+  <div id="http-list" class="http-list"></div>
+</div>
+
+<!-- ======================== CORS ======================== -->
+<div class="panel" id="tool-cors">
+  <div class="panel-header">
+    <h1>CORS Header Analyzer</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="corsClear()">Clear</button>
+      <button class="btn primary" onclick="analyzeCORS()">Analyze</button>
+    </div>
+  </div>
+  <div class="cors-layout">
+    <div class="pane-title">Paste Response Headers</div>
+    <textarea id="cors-in" class="editor short" placeholder="Access-Control-Allow-Origin: *&#10;Access-Control-Allow-Methods: GET, POST, OPTIONS&#10;Access-Control-Allow-Headers: Content-Type, Authorization&#10;Access-Control-Max-Age: 86400"></textarea>
+    <div id="cors-out" class="cors-results"></div>
+  </div>
+  <div class="statusbar" id="cors-status"></div>
+</div>
+
+<!-- ======================== CIDR ======================== -->
+<div class="panel" id="tool-cidr">
+  <div class="panel-header">
+    <h1>IP / CIDR Calculator</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="cidrClear()">Clear</button>
+      <button class="btn primary" onclick="calcCIDR()">Calculate</button>
+    </div>
+  </div>
+  <input type="text" id="cidr-in" class="full-input" placeholder="192.168.1.0/24 or 10.0.0.1"/>
+  <div id="cidr-out" class="cidr-out"></div>
+  <div class="statusbar" id="cidr-status"></div>
+</div>
+
+<!-- ======================== CRON ======================== -->
+<div class="panel" id="tool-cron">
+  <div class="panel-header">
+    <h1>Cron Expression Parser & Explainer</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="cronClear()">Clear</button>
+      <button class="btn primary" onclick="parseCron()">Parse</button>
+    </div>
+  </div>
+  <input type="text" id="cron-in" class="full-input" placeholder="0 9 * * 1-5"/>
+  <div id="cron-out" class="cron-out"></div>
+  <div class="cron-presets">
+    <div class="pane-title" style="margin-bottom:8px">Common Presets</div>
+    <div class="preset-grid" id="cron-presets"></div>
+  </div>
+  <div class="statusbar" id="cron-status"></div>
+</div>
+
+<!-- ======================== COLOR ======================== -->
+<div class="panel" id="tool-color">
+  <div class="panel-header"><h1>Color Picker & Converter</h1></div>
+  <div class="color-layout">
+    <div class="color-left">
+      <input type="color" id="color-pick" class="color-pick" value="#4f8ef7" oninput="colorFromPicker()"/>
+      <div id="color-swatch" class="color-swatch"></div>
+    </div>
+    <div class="color-right">
+      <div class="color-inputs" id="color-inputs"></div>
+      <div class="color-palette" id="color-palette"></div>
+    </div>
+  </div>
+  <div class="statusbar" id="color-status"></div>
+</div>
+
+<!-- ======================== EPOCH ======================== -->
+<div class="panel" id="tool-epoch">
+  <div class="panel-header">
+    <h1>Epoch / Timestamp Converter</h1>
+    <div class="actions"><button class="btn ghost" onclick="epochNow()">Use Now</button></div>
+  </div>
+  <div class="epoch-card">
+    <div class="epoch-section">
+      <div class="pane-title">Unix Timestamp → Date</div>
+      <div class="epoch-row">
+        <input type="text" id="ep-ts" class="epoch-inp" placeholder="1700000000"/>
+        <select id="ep-unit" class="sel"><option value="s">Seconds</option><option value="ms">Milliseconds</option></select>
+        <button class="btn primary" onclick="epochToDate()">Convert →</button>
+      </div>
+      <div id="ep-result" class="epoch-result"></div>
+    </div>
+    <div class="epoch-div"></div>
+    <div class="epoch-section">
+      <div class="pane-title">Date → Unix Timestamp</div>
+      <div class="epoch-row">
+        <input type="datetime-local" id="ep-date" class="epoch-inp wide"/>
+        <button class="btn primary" onclick="dateToEpoch()">Convert →</button>
+      </div>
+      <div id="ep-date-result" class="epoch-result"></div>
+    </div>
+    <div class="epoch-div"></div>
+    <div class="epoch-section">
+      <div class="pane-title">Live Clock</div>
+      <div id="ep-clock" class="ep-clock"></div>
+    </div>
+  </div>
+  <div class="statusbar" id="ep-status"></div>
+</div>
+
+<!-- ======================== NUMBER BASE ======================== -->
+<div class="panel" id="tool-numbase">
+  <div class="panel-header"><h1>Number Base Converter</h1></div>
+  <div class="numbase-layout">
+    <div class="nb-card" id="nb-dec"><div class="nb-label">Decimal (Base 10)</div><input id="nb-d" class="nb-input" placeholder="255" oninput="nbConvert('d')"/></div>
+    <div class="nb-card" id="nb-bin"><div class="nb-label">Binary (Base 2)</div><input id="nb-b" class="nb-input" placeholder="11111111" oninput="nbConvert('b')"/></div>
+    <div class="nb-card" id="nb-hex"><div class="nb-label">Hexadecimal (Base 16)</div><input id="nb-h" class="nb-input" placeholder="FF" oninput="nbConvert('h')"/></div>
+    <div class="nb-card" id="nb-oct"><div class="nb-label">Octal (Base 8)</div><input id="nb-o" class="nb-input" placeholder="377" oninput="nbConvert('o')"/></div>
+    <div class="nb-card" id="nb-custom">
+      <div class="nb-label">Custom Base <input id="nb-base" class="nb-base-input" type="number" min="2" max="36" value="32"/></div>
+      <input id="nb-c" class="nb-input" placeholder="7v" oninput="nbConvert('c')"/>
+    </div>
+  </div>
+  <div class="statusbar" id="nb-status"></div>
+</div>
+
+<!-- ======================== QR CODE ======================== -->
+<div class="panel" id="tool-qrcode">
+  <div class="panel-header">
+    <h1>QR Code Generator</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="qrDownload()">Download PNG</button>
+      <button class="btn ghost" onclick="qrClear()">Clear</button>
+      <button class="btn primary" onclick="genQR()">Generate</button>
+    </div>
+  </div>
+  <div class="qr-layout">
+    <div class="qr-left">
+      <textarea id="qr-in" class="editor" placeholder="Enter URL, text, or any content...&#10;&#10;https://example.com"></textarea>
+      <div class="qr-opts">
+        <label>Size: <input type="range" id="qr-size" min="100" max="400" value="200"/> <span id="qr-size-val">200px</span></label>
+        <label>Error Correction: <select id="qr-ec" class="sel"><option value="L">L (7%)</option><option value="M" selected>M (15%)</option><option value="Q">Q (25%)</option><option value="H">H (30%)</option></select></label>
+      </div>
+    </div>
+    <div class="qr-right">
+      <canvas id="qr-canvas" class="qr-canvas"></canvas>
+    </div>
+  </div>
+  <div class="statusbar" id="qr-status"></div>
+</div>
+
+<!-- ======================== IMAGE TO BASE64 ======================== -->
+<div class="panel" id="tool-img-b64">
+  <div class="panel-header">
+    <h1>Image → Base64 Converter</h1>
+    <div class="actions">
+      <button class="btn ghost" onclick="imgCopyB64()">Copy Base64</button>
+      <button class="btn ghost" onclick="imgCopyCSS()">Copy CSS</button>
+      <button class="btn ghost" onclick="imgClear()">Clear</button>
+    </div>
+  </div>
+  <div class="img-layout">
+    <div class="drop-zone" id="img-drop" onclick="document.getElementById('img-file').click()" ondragover="event.preventDefault()" ondrop="imgDrop(event)">
+      <input type="file" id="img-file" accept="image/*" style="display:none" onchange="imgLoad(event)"/>
+      <div id="img-preview-wrap">
+        <div class="drop-hint">Drop image here or click to browse</div>
+        <div class="drop-sub">Supports PNG, JPG, GIF, WebP, SVG</div>
+      </div>
+    </div>
+    <div class="img-output">
+      <div class="pane-title">Base64 Output</div>
+      <div id="img-b64-out" class="editor out" style="flex:1"></div>
+      <div id="img-info" class="img-info"></div>
+    </div>
+  </div>
+  <div class="statusbar" id="img-status"></div>
+</div>
+
+</main>
+</div>
+
+<script src="libs/qrcode.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

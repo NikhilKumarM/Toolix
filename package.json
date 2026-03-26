@@ -1,0 +1,36 @@
+{
+  "name": "toolix",
+  "version": "2.0.0",
+  "description": "Toolix — 25 Developer Utilities",
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "node -e \"require('fs').copyFileSync('node_modules/qrcode/build/qrcode.min.js','libs/qrcode.min.js')\"",
+    "start": "electron .",
+    "build": "electron-builder --win --x64",
+    "build:portable": "electron-builder --win portable --x64"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.3"
+  },
+  "build": {
+    "appId": "com.toolix.app",
+    "productName": "Toolix",
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "files": ["**/*", "!node_modules/.cache"]
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.0.0"
+  }
+}
+
