@@ -1,7 +1,7 @@
 {
   "name": "toolix",
-  "version": "2.0.0",
-  "description": "Toolix — 25 Developer Utilities",
+  "version": "1.0.0",
+  "description": "Toolix — Developer Utilities",
   "main": "main.js",
   "scripts": {
     "postinstall": "node -e \"require('fs').copyFileSync('node_modules/qrcode/build/qrcode.min.js','libs/qrcode.min.js')\"",
