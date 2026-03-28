@@ -60,7 +60,6 @@
       <button class="nav-btn" data-tool="color"><span class="ni">●</span>Color Converter</button>
       <button class="nav-btn" data-tool="epoch"><span class="ni">⏱</span>Epoch Converter</button>
       <button class="nav-btn" data-tool="numbase"><span class="ni">01</span>Number Base</button>
-      <button class="nav-btn" data-tool="qrcode"><span class="ni">▦</span>QR Code</button>
       <button class="nav-btn" data-tool="img-b64"><span class="ni">🖼</span>Image → Base64</button>
     </div>
   </nav>
@@ -570,31 +569,6 @@
   <div class="statusbar" id="nb-status"></div>
 </div>
 
-<!-- ======================== QR CODE ======================== -->
-<div class="panel" id="tool-qrcode">
-  <div class="panel-header">
-    <h1>QR Code Generator</h1>
-    <div class="actions">
-      <button class="btn ghost" onclick="qrDownload()">Download PNG</button>
-      <button class="btn ghost" onclick="qrClear()">Clear</button>
-      <button class="btn primary" onclick="genQR()">Generate</button>
-    </div>
-  </div>
-  <div class="qr-layout">
-    <div class="qr-left">
-      <textarea id="qr-in" class="editor" placeholder="Enter URL, text, or any content...&#10;&#10;https://example.com"></textarea>
-      <div class="qr-opts">
-        <label>Size: <input type="range" id="qr-size" min="100" max="400" value="200"/> <span id="qr-size-val">200px</span></label>
-        <label>Error Correction: <select id="qr-ec" class="sel"><option value="L">L (7%)</option><option value="M" selected>M (15%)</option><option value="Q">Q (25%)</option><option value="H">H (30%)</option></select></label>
-      </div>
-    </div>
-    <div class="qr-right">
-      <canvas id="qr-canvas" class="qr-canvas"></canvas>
-    </div>
-  </div>
-  <div class="statusbar" id="qr-status"></div>
-</div>
-
 <!-- ======================== IMAGE TO BASE64 ======================== -->
 <div class="panel" id="tool-img-b64">
   <div class="panel-header">
@@ -625,7 +599,6 @@
 </main>
 </div>
 
-<script src="libs/qrcode.min.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

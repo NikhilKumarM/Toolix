@@ -4,13 +4,9 @@
   "description": "Toolix — Developer Utilities",
   "main": "main.js",
   "scripts": {
-    "postinstall": "node -e \"require('fs').copyFileSync('node_modules/qrcode/build/qrcode.min.js','libs/qrcode.min.js')\"",
     "start": "electron .",
     "build": "electron-builder --win --x64",
     "build:portable": "electron-builder --win portable --x64"
-  },
-  "dependencies": {
-    "qrcode": "^1.5.3"
   },
   "build": {
     "appId": "com.toolix.app",
